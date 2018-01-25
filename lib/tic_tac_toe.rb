@@ -13,7 +13,7 @@ class TicTacToe
     [6, 4, 2]
   ]
 
-  def display_board(board)
+  def display_board
     puts " #{@board[0]} | #{@board[1]} | #{@board[2]} "
     puts "-----------"
     puts " #{@board[3]} | #{@board[4]} | #{@board[5]} "
@@ -25,19 +25,19 @@ class TicTacToe
     input.to_i - 1
   end
 
-  def move(board, index, player)
+  def move(index, player)
     @board[index] = player
   end
 
-  def position_taken?(board, index)
+  def position_taken?(index)
     @board[index] == "X" || @board[index] == "O"
   end
 
-  def valid_move?(board, index)
+  def valid_move?(index)
     index.between?(0, 8) && !position_taken?(board, index)
   end
 
-  def turn(board)
+  def turn
     puts "Please enter 1-9"
     input = gets.strip
     index = input_to_index(input)
@@ -49,46 +49,46 @@ class TicTacToe
     end
   end
 
-  def turn_count(board)
+  def turn_count
     @board.count { |token| token == "X" || token == "O"}
   end
 
-  def current_player(board)
-    turn_count(board) % 2 == 0 ? "X" : "O"
+  def current_player
+    turn_count(@board) % 2 == 0 ? "X" : "O"
   end
 
-  def won?(board)
+  def won?
     WIN_COMBINATIONS.detect do |combo|
       @board[combo[0]] == @board[combo[1]] &&
       @board[combo[2]] == @board[combo[1]] &&
-      position_taken?(board, combo[0])
+      position_taken?(combo[0])
     end
   end
 
-  def full?(board)
+  def full?
     @board.all? {|token| token == "X" || token == "O"}
   end
 
-  def draw?(board)
+  def draw?
     full?(board) && !won?(board)
   end
 
-  def over?(board)
+  def over?
     draw?(board) || won?(board)
   end
 
-  def winner(board)
+  def winner
     if winning_combo = won?(board)
       @board[winning_combo.first]
     end
   end
 
-  def play(board)
+  def play
     until over?(board)
       turn(board)
     end
     if won?(board)
-      puts "Congratulations #{winner(board)}!"
+      puts "Congratulations #{winner(@board)}!"
     elsif draw?(board)
       puts "Cat's Game!"
     end
